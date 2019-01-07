@@ -1,0 +1,425 @@
+Microsoft Windows [Version 10.0.16299.847]
+(c) 2017 Microsoft Corporation. All rights reserved.
+
+C:\Users\spolamar>cd/
+
+C:\> sqlplus trg728/training728@//10.219.34.3:1521/orcl
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon Jan 7 10:03:47 2019
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> select * from agent;
+
+AGENTID              AGENTNAME            NO_OF_USER
+-------------------- -------------------- ----------
+100                  ram
+101                  shubham
+102                  shusant
+
+SQL> select * from customers;
+select * from customers
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from customer;
+select * from customer
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME
+-------------------- ------------------------------
+INSUREDSTREET                            INSUREDCITY     INSUREDSTATE
+---------------------------------------- --------------- ---------------
+INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT
+---------- ------------- ------------------------------
+ram                  jaya
+sdgf                                     dfhjsdgf        dfhasdghe
+    657849      34567892 sdfjgdfj
+
+ram                  chandana
+sdgf                                     dfhjsdgf        dfhasdghe
+    657849      34567862 sdfjgdfj
+
+AGENTNAME            INSUREDNAME
+-------------------- ------------------------------
+INSUREDSTREET                            INSUREDCITY     INSUREDSTATE
+---------------------------------------- --------------- ---------------
+INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT
+---------- ------------- ------------------------------
+
+shubham              anamika
+sdgf                                     dfhjsdgf        dfhasdghe
+    657849      34569862 sdfjgdfj
+
+shusant              sufall
+sdgf                                     dfhjsdgf        dfhasdghe
+
+AGENTNAME            INSUREDNAME
+-------------------- ------------------------------
+INSUREDSTREET                            INSUREDCITY     INSUREDSTATE
+---------------------------------------- --------------- ---------------
+INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT
+---------- ------------- ------------------------------
+    657849      34369862 sdfjgdfj
+
+shubham              nitish
+sdgf                                     dfhjsdgf        dfhasdghe
+    657849      34366862 sdfjgdfj
+
+
+SQL> set linesize 300;
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34567892 sdfjgdfj
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34567862 sdfjgdfj
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34569862 sdfjgdfj
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34369862 sdfjgdfj
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34366862 sdfjgdfj
+
+SQL> slecet  count(insuredName) from agent_create_account where agentname='ram';
+SP2-0734: unknown command beginning "slecet  co..." - rest of line ignored.
+SQL> select  count(insuredName) from agent_create_account where agentname='ram';
+
+COUNT(INSUREDNAME)
+------------------
+                 2
+
+SQL> select  count(insuredName) from agent_create_account where agentname='ram';
+
+COUNT(INSUREDNAME)
+------------------
+                 2
+
+SQL> update agent set NO_OF_USER=(slecet  count(insuredName) from agent_create_account where agentname='ram' ) ;
+update agent set NO_OF_USER=(slecet  count(insuredName) from agent_create_account where agentname='ram' )
+                                     *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) ;
+
+3 rows updated.
+
+SQL> slecet  * from agent;
+SP2-0734: unknown command beginning "slecet  * ..." - rest of line ignored.
+SQL> select  * from agent;
+
+AGENTID              AGENTNAME            NO_OF_USER
+-------------------- -------------------- ----------
+100                  ram                           2
+101                  shubham                       2
+102                  shusant                       2
+
+SQL> update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName=ram) ;
+update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName=ram)
+                                                                                                                             *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName='ram') ;
+update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName='ram')
+                                                                                                                               *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName='ram' ;
+
+1 row updated.
+
+SQL> select  * from agent;
+
+AGENTID              AGENTNAME            NO_OF_USER
+-------------------- -------------------- ----------
+100                  ram                           2
+101                  shubham                       2
+102                  shusant                       2
+
+SQL> truncate agent no_of_user;
+truncate agent no_of_user
+               *
+ERROR at line 1:
+ORA-03290: Invalid truncate command - missing CLUSTER or TABLE keyword
+
+
+SQL> truncate agent column no_of_user;
+truncate agent column no_of_user
+               *
+ERROR at line 1:
+ORA-03290: Invalid truncate command - missing CLUSTER or TABLE keyword
+
+
+SQL> alter table agent drop column no_of_user;
+
+Table altered.
+
+SQL> select  * from agent;
+
+AGENTID              AGENTNAME
+-------------------- --------------------
+100                  ram
+101                  shubham
+102                  shusant
+
+SQL> alter table agent add column no_of
+  2
+SQL>
+SQL> alter table agent add column no_of_user;
+alter table agent add column no_of_user
+                      *
+ERROR at line 1:
+ORA-00904: : invalid identifier
+
+
+SQL> alter table agent modify column no_of_user;
+alter table agent modify column no_of_user
+                                         *
+ERROR at line 1:
+ORA-00905: missing keyword
+
+
+SQL> alter table agent add column no_of_user number(10);
+alter table agent add column no_of_user number(10)
+                      *
+ERROR at line 1:
+ORA-00904: : invalid identifier
+
+
+SQL> alter table agent add no_of_user number(10);
+
+Table altered.
+
+SQL> select  * from agent;
+
+AGENTID              AGENTNAME            NO_OF_USER
+-------------------- -------------------- ----------
+100                  ram
+101                  shubham
+102                  shusant
+
+SQL> update agent set NO_OF_USER=(select  count(insuredName) from agent_create_account where agentname='ram' ) where agentName='ram' ;
+
+1 row updated.
+
+SQL> select  * from agent;
+
+AGENTID              AGENTNAME            NO_OF_USER
+-------------------- -------------------- ----------
+100                  ram                           2
+101                  shubham
+102                  shusant
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select  * from customers;
+select  * from customers
+               *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe           657849      34567892 sdfjgdfj
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe           657849      34567862 sdfjgdfj
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe           657849      34569862 sdfjgdfj
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34369862 sdfjgdfj
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34366862 sdfjgdfj
+
+SQL> alter table agent_create_account add policynumber number(10),premiumAmount number(10);
+alter table agent_create_account add policynumber number(10),premiumAmount number(10)
+                                                            *
+ERROR at line 1:
+ORA-01735: invalid ALTER TABLE option
+
+
+SQL> alter table agent_create_account add policynumber number(10);
+
+Table altered.
+
+SQL> alter table agent_create_account add premiumAmount number(10);
+
+Table altered.
+
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER PREMIUMAMOUNT
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------ ------------ -------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34567892 sdfjgdfj
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34567862 sdfjgdfj
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34569862 sdfjgdfj
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34369862 sdfjgdfj
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe
+         657849      34366862 sdfjgdfj
+
+SQL> set linesize 200;
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------ ------------
+PREMIUMAMOUNT
+-------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe           657849      34567892 sdfjgdfj
+
+
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe           657849      34567862 sdfjgdfj
+
+
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe           657849      34569862 sdfjgdfj
+
+
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------ ------------
+PREMIUMAMOUNT
+-------------
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34369862 sdfjgdfj
+
+
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34366862 sdfjgdfj
+
+
+
+SQL> set linesize 400;
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER PREMIUMAMOUNT
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------ ------------ -------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe           657849      34567892 sdfjgdfj
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe           657849      34567862 sdfjgdfj
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe           657849      34569862 sdfjgdfj
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34369862 sdfjgdfj
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34366862 sdfjgdfj
+
+SQL> select * from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    INSUREDSTREET                            INSUREDCITY     INSUREDSTATE    INSUREDZIP ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER PREMIUMAMOUNT
+-------------------- ------------------------------ ---------------------------------------- --------------- --------------- ---------- ------------- ------------------------------ ------------ -------------
+ram                  jaya                           sdgf                                     dfhjsdgf        dfhasdghe           657849      34567892 sdfjgdfj
+ram                  chandana                       sdgf                                     dfhjsdgf        dfhasdghe           657849      34567862 sdfjgdfj
+shubham              anamika                        sdgf                                     dfhjsdgf        dfhasdghe           657849      34569862 sdfjgdfj
+shusant              sufall                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34369862 sdfjgdfj
+shubham              nitish                         sdgf                                     dfhjsdgf        dfhasdghe           657849      34366862 sdfjgdfj
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select agentname,insuredname,accountnumber,businesssegment,policynumber,policyamount from agent_create_account;
+select agentname,insuredname,accountnumber,businesssegment,policynumber,policyamount from agent_create_account
+                                                                        *
+ERROR at line 1:
+ORA-00904: "POLICYAMOUNT": invalid identifier
+
+
+SQL> select agentname,insuredname,accountnumber,businesssegment,policynumber,premiumamount from agent_create_account;
+
+AGENTNAME            INSUREDNAME                    ACCOUNTNUMBER BUSINESSSEGMENT                POLICYNUMBER PREMIUMAMOUNT
+-------------------- ------------------------------ ------------- ------------------------------ ------------ -------------
+ram                  jaya                                34567892 sdfjgdfj
+ram                  chandana                            34567862 sdfjgdfj
+shubham              anamika                             34569862 sdfjgdfj
+shusant              sufall                              34369862 sdfjgdfj
+shubham              nitish                              34366862 sdfjgdfj
+
+SQL> create table profiledetails(username varchar2(20),password varchar2(12),rolecode varchar2(10));
+
+Table created.
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> desc profiledetails;
+ Name
+                                           Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------- ------------------------------------------------------------------------------------------------------------------------------------------------------------
+ USERNAME
+                                                    VARCHAR2(20)
+ PASSWORD
+                                                    VARCHAR2(12)
+ ROLECODE
+                                                    VARCHAR2(10)
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> commit;
+
+Commit complete.
+
+SQL> select * from profiledetails;
+
+no rows selected
+
+SQL> select * from profiledetails;
+
+USERNAME             PASSWORD     ROLECODE
+-------------------- ------------ ----------
+ramcha               adjgysd      dzsf
+
+SQL> select * from profiledetails;
+
+USERNAME             PASSWORD     ROLECODE
+-------------------- ------------ ----------
+ramcha               adjgysd      dzsf
+sushanth             sushanth123  user
+
+SQL>
